@@ -1,0 +1,45 @@
+/**
+ * Style untuk pencetakan.
+ */
+
+@CHARSET "ISO-8859-1";
+
+body { font-family: "Times New Roman"; font-size: small; }
+
+/** Wrapper */
+.report-wrapper { padding: 0; }
+
+/** Header */
+.report-header { border-bottom-style: double; margin-bottom: 30px; }
+.report-header .logo { float: left; }
+.report-header .logo img { width: 100px; height: 65px; }
+.report-header .title { margin-right: 100px; min-height: 65px; text-align: center; }
+.report-header .title h1 { font-size: 1em; margin: 0 0 3px 0; }
+.report-header .title h2, .report-header .title p { 
+	font-size: 1em; margin: 0; font-weight: normal; 
+}
+
+.report-title { margin-bottom: 1.2em; }
+.report-title h1 { text-align: center; font-size: 1em; margin: 0; padding: 0; }
+.report-title h2 { text-align: center; font-size: 1em; margin: 0; padding: 0; font-weight: normal; }
+
+/** Body */
+.report-body h1 { font-size: 1em; margin: 0; padding: 0; }
+.report-body h2 { font-size: 1em; margin: 0; padding: 0; }
+
+table.report { border-collapse: collapse; border-spacing: 0; margin: 10px 0; width: 100%; }
+table.report th { background-color: #eeeeee; }
+table.report th, table.report td { padding: 3px; border: 1px solid #000000; }
+table.report td { vertical-align: top; }
+table.report-no-border th, table.report-no-border td { border: 0; }
+
+/** Footer */
+.report-footer { margin-top: 3em; }
+.report-footer .otorisasi .otorisasi-left, .report-footer .otorisasi .otorisasi-right { 
+	width: 150px; text-align: center; display: block; overflow: hidden;
+}
+.report-footer .otorisasi .otorisasi-left { float: left; }
+.report-footer .otorisasi .otorisasi-right { float: right; }
+.report-footer .otorisasi .otorisasi-left .nama, .report-footer .otorisasi .otorisasi-right .nama { 
+	margin-top: 5em; border-bottom: 1px solid #000000; 
+}

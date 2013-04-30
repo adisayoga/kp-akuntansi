@@ -1,0 +1,21 @@
+<pre>
+<?php
+function newLine() {
+	print '<div style="margin: 10px 0; border-bottom: 1px solid #ccc;"></div>';
+}
+
+$dateObject = new Zend_Date("1/8/2010");
+
+//---------------------------------------------------------- 
+
+print $dateObject->get(Zend_Date::TIMESTAMP, "en_US") . '<br />';
+
+print $dateObject->get(Zend_Date::DATE_LONG, "en_US") . '<br />';
+print $dateObject->get(Zend_Date::DATE_LONG, "id");
+
+newLine();
+
+$tanggal = new ZendX_JQuery_Form_Element_DatePicker("dp1", array('jQueryParams' => array('defaultDate' => '2007/10/10')));
+echo $tanggal;
+?>
+</pre>

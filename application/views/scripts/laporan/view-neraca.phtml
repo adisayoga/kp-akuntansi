@@ -1,0 +1,224 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8" ?>';
+      echo $this->doctype();
+?>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    
+    <?php echo $this->headTitle(); ?>
+    <link rel="icon" href="/images/favicon.ico" />
+    <link rel="icon" href="/images/favicon_16x16.png" sizes="16x16" />
+    <link rel="icon" href="/images/favicon_32x32.png" sizes="32x32" />
+    <link rel="icon" href="/images/favicon_48x48.png" sizes="48x48" />
+    
+	<link href="/css/report.css" media="screen, print" rel="stylesheet" type="text/css" />
+	<link href="/css/report-screen.css" media="screen" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="report-wrapper" style="width: 262mm; width: 80%;">
+<?php include "/include/report-header.php";?>
+
+<div class="report-title">
+	<h1>NERACA</h1>
+	<h2>Periode <?php echo $this->tglAwal->get("dd/MM/yyyy"); ?> s/d <?php echo $this->tglAkhir->get("dd/MM/yyyy"); ?></h2>
+</div>
+
+<div class="report-body">
+
+<table class="report">
+<!-- Header -->
+<thead><tr>
+	<th colspan="2" style="width: 50%; ">Aktiva</th>
+	<th colspan="2" style="width: 50%; ">Pasiva</th>
+</tr></thead>
+
+<tbody><tr><td colspan="2" style="padding: 0; ">
+	
+	<!-- Aktiva -->
+	<table class="report report-no-border">
+	
+	<?php $totalAktiva = 0; ?>
+	<?php foreach ($this->neraca["1"] as $row): ?>
+		<?php $margin = ($row["lvl"] * 20) + 3; $saldo = number_format($row["saldo"], 0); ?>
+		
+		<tr>
+		<?php if ($row["lvl"] >= 2): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; "><?php echo $row["account"]; ?></td>
+			<td colspan="3" style="text-align: right; "><?php echo $saldo; ?></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			
+		<?php elseif ($row["lvl"] == 1 && $row["id"] == 0): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; font-weight: bold; "><?php echo $row["account"]; ?>:</td>
+			<td style="border-top: 1px solid #000; ">&nbsp;</td>
+			<td colspan="3" style="text-align: right; font-weight: bold; "><?php echo $saldo; ?></td>
+			<td>&nbsp;</td>
+		
+		<?php elseif ($row["lvl"] == 1 && $row["isLeaf"]): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; "><?php echo $row["account"]; ?></td>
+			<td>&nbsp;</td>
+			<td colspan="3" style="text-align: right; "><?php echo $saldo; ?></td>
+			<td>&nbsp;</td>
+		
+		<?php elseif ($row["lvl"] == 0 && $row["id"] == 0): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; font-weight: bold; "><?php echo $row["account"]; ?>:</td>
+			<td>&nbsp;</td>
+			<td style="border-top: 1px solid #000; ">&nbsp;</td>
+			<td colspan="3" style="text-align: right;  font-weight: bold; "><?php echo $saldo; ?></td>
+		
+		<?php elseif ($row["lvl"] == 0 && $row["isLeaf"]): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; "><?php echo $row["account"]; ?></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td colspan="3" style="text-align: right; "><?php echo $saldo; ?></td>
+		
+		<?php else: ?>
+			<td style="padding-left: <?php echo $margin; ?>px; font-weight: bold; "><?php echo $row["account"]; ?></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		<?php endif; ?>
+		
+		<?php $totalAktiva = $row["saldo"]; ?>
+		
+		</tr>
+	<?php endforeach; ?>
+	</table></td>
+	
+	<td colspan="2" style="padding: 0; "><table class="report report-no-border">
+	
+	<!-- Pasiva -->
+	<?php $totalPasiva = 0; ?>
+	<?php foreach ($this->neraca["2"] as $row): ?>
+		<?php $margin = ($row["lvl"] * 20) + 3; $saldo = number_format($row["saldo"], 0); ?>
+		
+		<tr>
+		<?php if ($row["lvl"] >= 2): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; "><?php echo $row["account"]; ?></td>
+			<td colspan="3" style="text-align: right; "><?php echo $saldo; ?></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		
+		<?php elseif ($row["lvl"] == 1 && $row["id"] == 0): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; font-weight: bold; "><?php echo $row["account"]; ?>:</td>
+			<td style="border-top: 1px solid #000; ">&nbsp;</td>
+			<td colspan="3" style="text-align: right; font-weight: bold; "><?php echo $saldo; ?></td>
+			<td>&nbsp;</td>
+		
+		<?php elseif ($row["lvl"] == 1 && $row["isLeaf"]): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; "><?php echo $row["account"]; ?></td>
+			<td>&nbsp;</td>
+			<td colspan="3" style="text-align: right; "><?php echo $saldo; ?></td>
+			<td>&nbsp;</td>
+		
+		<?php elseif ($row["lvl"] == 0 && $row["id"] == 0): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; font-weight: bold; "><?php echo $row["account"]; ?>:</td>
+			<td>&nbsp;</td>
+			<td style="border-top: 1px solid #000; ">&nbsp;</td>
+			<td colspan="3" style="text-align: right;  font-weight: bold; "><?php echo $saldo; ?></td>
+		
+		<?php elseif ($row["lvl"] == 0 && $row["isLeaf"]): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; "><?php echo $row["account"]; ?></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td colspan="3" style="text-align: right; "><?php echo $saldo; ?></td>
+		
+		<?php else: ?>
+			<td style="padding-left: <?php echo $margin; ?>px; font-weight: bold; "><?php echo $row["account"]; ?></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		<?php endif; ?>
+		
+		<?php $totalPasiva = $row["saldo"]; ?>
+		
+		</tr>
+	<?php endforeach; ?>
+
+	<!-- Modal -->
+	<?php $totalModal = 0; ?>
+	<?php foreach ($this->neraca["3"] as $row): ?>
+		<?php $margin = ($row["lvl"] * 20) + 3; $saldo = number_format($row["saldo"], 0); ?>
+		
+		<tr>
+		<?php if ($row["lvl"] >= 2): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; "><?php echo $row["account"]; ?></td>
+			<td colspan="3" style="text-align: right; "><?php echo $saldo; ?></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		
+		<?php elseif ($row["lvl"] == 1 && $row["id"] == 0): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; font-weight: bold; "><?php echo $row["account"]; ?>:</td>
+			<td style="border-top: 1px solid #000; ">&nbsp;</td>
+			<td colspan="3" style="text-align: right; font-weight: bold; "><?php echo $saldo; ?></td>
+			<td>&nbsp;</td>
+		
+		<?php elseif ($row["lvl"] == 1 && $row["isLeaf"]): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; "><?php echo $row["account"]; ?></td>
+			<td>&nbsp;</td>
+			<td colspan="3" style="text-align: right; "><?php echo $saldo; ?></td>
+			<td>&nbsp;</td>
+		
+		<?php elseif ($row["lvl"] == 0 && $row["id"] == 0): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; font-weight: bold; "><?php echo $row["account"]; ?>:</td>
+			<td>&nbsp;</td>
+			<td style="border-top: 1px solid #000; ">&nbsp;</td>
+			<td colspan="3" style="text-align: right;  font-weight: bold; "><?php echo $saldo; ?></td>
+		
+		<?php elseif ($row["lvl"] == 0 && $row["isLeaf"]): ?>
+			<td style="padding-left: <?php echo $margin; ?>px; "><?php echo $row["account"]; ?></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td colspan="3" style="text-align: right; "><?php echo $saldo; ?></td>
+		
+		<?php else: ?>
+			<td style="padding-left: <?php echo $margin; ?>px; font-weight: bold; "><?php echo $row["account"]; ?></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		<?php endif; ?>
+		
+		<?php $totalModal = $row["saldo"]; ?>
+		
+		</tr>
+	<?php endforeach; ?>
+	</table>
+	
+	</td>
+</tr></tbody>
+
+<!-- Footer -->
+<tfoot><tr>
+	<th style="border-right: 0; text-align: left; ">Total Aktiva</th>
+	<th style="border-left: 0; text-align: right; "><?php echo number_format($totalAktiva); ?></th>
+	<th style="border-right: 0; text-align: left; ">Total Pasiva</th>
+	<th style="border-left: 0; text-align: right; "><?php echo number_format($totalPasiva + $totalModal); ?></th>
+</tr></tfoot>
+</table>
+
+</div>
+
+<div class="report-footer">
+	<div class="otorisasi">
+		<div class="otorisasi-left">
+			<div class="jabatan">Dibuat Oleh</div>
+			<div class="nama"></div>
+		</div>
+		<div class="otorisasi-right">
+			<div class="jabatan">Disetujui Oleh</div>
+			<div class="nama"></div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+</div>
+</div>
+
+</body>
+</html>

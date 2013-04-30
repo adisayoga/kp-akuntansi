@@ -1,0 +1,47 @@
+<script type="text/javascript">
+<!--
+	var api;
+	var lastUsername = <?php echo(($this->lastUsername)? '"' . $this->lastUsername . '"': "null"); ?>;
+
+	$(document).ready(function() {
+		api = jQuery.Zend.jsonrpc({url: '/api/v1.0/jsonrpc.php', async: true });
+		
+		$(".form").validate({
+			smd: api,
+			functionName: "validateUserForm",
+			toValidate: "#username, #displayName, #role",
+			exclude: lastUsername,
+			onSubmit: updateUser
+		});
+	});
+
+	/** Mengubah data user */
+	var updateUser = function() {
+		var data = {
+			username: $("#username").val(),
+			displayName: $("#displayName").val(),
+			role: $("#role").val()
+		};
+		
+		api.updateUser($("#id").val(), data, { success: function(result, id, method) {
+			if (!result) {
+				displayMessage("Data tidak dapat diubah!", "error");
+				return;
+			}
+				
+			window.location = "/user";
+		}});
+	};
+//-->
+</script>
+
+<h1>Update User</h1>
+<p>Untuk meng-update user ini, ubah yang anda perlukan, dan kemudian klik tombol update.</p>
+
+<?php echo $this->form; ?>
+
+<div class="pagination-control">
+	<a href="/user/update-password/id/<?php echo $this->form->getValue("id"); ?>">
+		Ubah Password
+	</a>
+</div>

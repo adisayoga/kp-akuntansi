@@ -1,0 +1,87 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8" ?>';
+      echo $this->doctype();
+?>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    
+    <?php echo $this->headTitle(); ?>
+    <link rel="icon" href="/images/favicon.ico" />
+    <link rel="icon" href="/images/favicon_16x16.png" sizes="16x16" />
+    <link rel="icon" href="/images/favicon_32x32.png" sizes="32x32" />
+    <link rel="icon" href="/images/favicon_48x48.png" sizes="48x48" />
+    
+	<link href="/css/report.css" media="screen, print" rel="stylesheet" type="text/css" />
+	<link href="/css/report-screen.css" media="screen" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="report-wrapper">
+<?php include "/include/report-header.php";?>
+
+<div class="report-title">
+	<h1>LAPORAN BUKU BESAR</h1>
+	<h2>Periode <?php echo $this->tglAwal->get("dd/MM/yyyy"); ?> s/d <?php echo $this->tglAkhir->get("dd/MM/yyyy"); ?></h2>
+</div>
+
+<div class="report-body">
+<h1>Akun: <?php echo $this->account->account; ?></h1>
+
+<table class="report" style="width: 100%;">
+<thead>
+	<tr>
+		<th>No</th>
+		<th>Tanggal</th>
+		<th>No Bukti</th>
+		<th>Keterangan</th>
+		<th>Debit</th>
+		<th>Kredit</th>
+		<th>Saldo</th>
+	</tr>
+</thead>
+<tbody>
+	<?php $i = 1; $totalDebit = 0; $totalKredit = 0; $saldo = 0; ?>
+	<?php foreach ($this->bukubesar as $row): ?>
+		<tr>
+			<td style="text-align: center;"><?php echo number_format($i, 0, ",", "."); ?></td>
+			<td><?php echo $row["tanggal"]; ?></td>
+			<td><?php echo $row["noBukti"]; ?></td>
+			<td<?php echo ($row["pos"] == "-1")? ' style="padding-left: 20px;"': ''; ?>><?php echo $row["keterangan"]; ?></td>
+			<td style="text-align: right; "><?php echo number_format($row["debit"], 0); ?></td>
+			<td style="text-align: right; "><?php echo number_format($row["kredit"], 0); ?></td>
+			<td style="text-align: right; "><?php echo number_format($row["saldo"], 0); ?></td>
+		</tr>
+		<?php $i++; $totalDebit += $row["debit"]; $totalKredit += $row["kredit"]; $saldo = $row["saldo"]; ?>
+	<?php endforeach; ?>
+</tbody>
+<tfoot>
+	<tr>
+		<th>&nbsp;</th>
+		<th>&nbsp;</th>
+		<th>&nbsp;</th>
+		<th>Total</th>
+		<th style="text-align: right; "><?php echo number_format($totalDebit, 0); ?></th>
+		<th style="text-align: right; "><?php echo number_format($totalKredit, 0); ?></th>
+		<th style="text-align: right; "><?php echo number_format($saldo, 0); ?></th>
+	</tr>
+</tfoot>
+</table>
+</div>
+
+<div class="report-footer">
+	<div class="otorisasi">
+		<div class="otorisasi-left">
+			<div class="jabatan">Dibuat Oleh</div>
+			<div class="nama"></div>
+		</div>
+		<div class="otorisasi-right">
+			<div class="jabatan">Disetujui Oleh</div>
+			<div class="nama"></div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+</div>
+</div>
+
+</body>
+</html>

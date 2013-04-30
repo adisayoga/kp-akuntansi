@@ -1,0 +1,11 @@
+<tr>
+	<td class="action"><a class="delete" href="/journal/delete/id/<?php echo $this->id; ?>"></a>
+		<a class="update" href="/journal/update/id/<?php echo $this->id; ?>"></a></td>
+	<td><?php echo $this->tanggal; ?></td>
+	<td><?php echo $this->noBukti; ?></td>
+	<td><?php echo $this->kodeAccount; ?></td>
+	<td<?php echo ($this->pos == -1)? ' style="padding-left: 20px;"': ''; ?>><?php echo $this->account; ?></td>
+	<td style="text-align: right;"><?php echo $this->debit; ?></td>
+	<td style="text-align: right;"><?php echo $this->kredit; ?></td>
+	<td><?php echo $this->keterangan; ?></td>
+</tr>

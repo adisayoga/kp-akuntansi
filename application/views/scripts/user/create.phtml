@@ -1,0 +1,48 @@
+<script type="text/javascript"><!--
+	var api;
+	$(document).ready(function() {
+		api = jQuery.Zend.jsonrpc({url: '/api/v1.0/jsonrpc.php', async: true });
+		$(".form").validate({
+			smd: api,
+			functionName: "validateUserForm",
+			toValidate: "#username, #displayName, #password, #role",
+			onSubmit: addNew
+		});
+	});
+
+	/** Menambah data baru */
+	var addNew = function() {
+		var data = {
+			username: $("#username").val(),
+			displayName: $("#displayName").val(),
+			password: $("#password").val(),
+			role: $("#role").val()
+		};
+		
+		api.addUser(data, { success: function(result, id, method) {
+			if (!result) {
+				displayMessage("Tidak dapat menambah data baru!", "error");
+				return;
+			}
+			
+			// Kosongkan field
+			$("#username").val("");
+			$("#displayName").val("");
+			$("#password").val("");
+
+			displayMessage("Data berhasil ditambahkan.");
+		}});
+	};
+//--></script>
+
+<h1>Tambah Data User</h1>
+<p>Untuk menambah data user, lengkapi form ini dan klik tombol simpan...</p>
+
+<?php if ($this->message): ?>
+	<div class="ui-state-highlight ui-corner-all message"> 
+		<div class="ui-icon ui-icon-info"></div>
+		<div><?php echo $this->message; ?></div>
+	</div>
+<?php endif; ?>
+
+<?php echo $this->form; ?>

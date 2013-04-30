@@ -1,0 +1,6 @@
+<?php if ($this->identity == null): ?>
+	<p>Anda harus <a href="/user/login">login</a> untuk menggunakan program ini.</p>
+<?php else: ?>
+	<p>Selamat datang, <b><?php echo $this->identity->displayName; ?></b>
+	[<a href="/user/logout">Logout</a>]</p>
+<?php endif; ?>

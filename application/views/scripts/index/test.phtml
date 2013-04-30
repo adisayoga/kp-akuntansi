@@ -1,0 +1,239 @@
+<?php echo $this->form; ?>
+
+<script type="text/javascript">
+<!--[
+/*	$(document).ready(function(){
+		// TEST BASIC CALL -- this is the usual way, blocking request
+		var testBasic = jQuery.Zend.jsonrpc({url: "/api/v1.0/jsonrpc.php"});
+		
+		if(testBasic.add(1,1) == 2) {
+			$('#basicTestResult').html('SUCCESS!');
+		}
+
+		// FLIP BASIC REQUEST INTO ASYNC AND TEST
+		testBasic.setAsyncSuccess(function(val) {
+			if(val) {
+				$('#asyncTestResult').html('SUCCESS!');
+			} else {
+				$('#asyncTestResult').html('FALSE SUCCESS!');
+			}
+		}).setAsyncError(function() {
+			$('#asyncTestResult').html('FAIL!');
+		}).setAsync(true);
+		
+		testBasic.hang(10);
+		$('#asyncTestResult').html('Waiting 10 seconds...');
+		
+		// ASYNC SMD REFLECT + ASYNC CALL
+		var testAsync = jQuery.Zend.jsonrpc({
+			url: '/api/v1.0/jsonrpc.php?hang=10',
+			async: true,
+			success: function(val) {
+				if(val) {
+					$('#asyncTestReflect').html('SUCCESS!');
+				} else {
+					$('#asyncTestReflect').html('FALSE SUCCESS!');
+				}
+			},
+			error: function() {
+				$('#asyncTestReflect').html('SECOND STAGE FAIL');
+			},
+			asyncReflect: true,
+			reflectSuccess: function(rpcme) {
+				$('#asyncTestReflect').html('STAGE ONE SUCCESS: DOING CALL (10 sec)');
+				rpcme.hang(10);
+			},
+			reflectError: function() {
+				$('#asyncTestReflect').html('REFLECT STAGE FAIL');
+			}
+		});
+		$('#asyncTestResult').html('Waiting 10 seconds...');
+		
+		// TEST PREBUILT SMD
+		var testPremadeSmd = jQuery.Zend.jsonrpc({
+			url: '/api/v1.0/jsonrpc.php',
+			smd: {
+				"transport":"POST",
+				"envelope":"JSON-RPC-2.0",
+				"contentType":"application\/json",
+				"SMDVersion":"2.0",
+				"target":"/api/v1.0/jsonrpc.php",
+				"services":{
+					"add":{
+						"envelope":"JSON-RPC-2.0",
+						"transport":"POST",
+						"parameters":[{"type":"integer","name":"x","optional":false},
+									  {"type":"integer","name":"y","optional":false}],
+						"returns":"integer"
+					},
+					"subtract":{
+						"envelope":"JSON-RPC-2.0",
+						"transport":"POST",
+						"parameters":[{"type":"integer","name":"x","optional":false},
+									  {"type":"integer","name":"y","optional":false}],
+						"returns":"integer"
+					},
+					"multiply":{
+						"envelope":"JSON-RPC-2.0",
+						"transport":"POST",
+						"parameters":[{"type":"integer","name":"x","optional":false},
+									  {"type":"integer","name":"y","optional":false}],
+						"returns":"integer"
+					},"divide":{
+						"envelope":"JSON-RPC-2.0",
+						"transport":"POST",
+						"parameters":[{"type":"integer","name":"x","optional":false},
+									  {"type":"integer","name":"y","optional":false}],
+						"returns":"float"
+					},
+					"hang":{"envelope":"JSON-RPC-2.0",
+						"transport":"POST",
+						"parameters":[{"type":"integer","name":"sleepTime","optional":false}],
+						"returns":"boolean"
+					}
+				},
+				"methods":{
+					"add":{
+						"envelope":"JSON-RPC-2.0",
+						"transport":"POST",
+						"parameters":[{"type":"integer","name":"x","optional":false},
+									  {"type":"integer","name":"y","optional":false}],
+						"returns":"integer"
+					},
+					"subtract":{
+						"envelope":"JSON-RPC-2.0","transport":"POST",
+						"parameters":[{"type":"integer","name":"x","optional":false},
+									  {"type":"integer","name":"y","optional":false}],
+						"returns":"integer"
+					},
+					"multiply":{
+						"envelope":"JSON-RPC-2.0",
+						"transport":"POST",
+						"parameters":[{"type":"integer","name":"x","optional":false},
+									  {"type":"integer","name":"y","optional":false}],
+						"returns":"integer"
+					},
+					"divide":{
+						"envelope":"JSON-RPC-2.0",
+						"transport":"POST",
+						"parameters":[{"type":"integer","name":"x","optional":false},
+									  {"type":"integer","name":"y","optional":false}],
+						"returns":"float"
+					},
+					"hang":{
+						"envelope":"JSON-RPC-2.0",
+						"transport":"POST",
+						"parameters":[{"type":"integer","name":"sleepTime","optional":false}],
+						"returns":"boolean"
+					}
+				}
+			}
+		});
+		
+		if(testPremadeSmd.add(2,2) == 4) {
+			$('#smdTestResult').html('SUCCESS!');
+		}
+
+		// TEST INDIVIDUAL CALLBACKS
+		var testIndividual = jQuery.Zend.jsonrpc({url: '/api/v1.0/jsonrpc.php',async: true});
+		
+		testIndividual.hang(10,{
+				success: function(ret, id, method) {
+						$('#indyCallbackResult').html('SUCCESS!');
+				},
+				error: function() {
+						$('#indyCallbackResult').html('FAIL!');
+				}
+		});
+		
+		testIndividual.add(2,2,{
+				success: function(ret, id, method) {
+							$('#indyCallbackResult').html('First stage success...wait 10 seconds');
+				},
+				error: function() {
+						$('#indyCallbackResult').html('First stage FAIL!');
+				}
+		});
+	});
+*/
+//-->
+</script>
+
+<p>
+  <b>
+    IF THESE TEST FAIL OR HANG... You probably have forgotten to stick
+    a Zend library in the same directory as rpc.php.  I don't package it
+    because it is like 20 MEGs large :)
+  </b>
+</p>
+<p>
+  Testing RPC features:
+</p>
+<ul>
+  <li>Test basic RPC: <span id="basicTestResult">Wait...</span></li>
+  <li>Test async request: <span id="asyncTestResult">Wait...</span></li>
+  <li>Test async reflect: <span id="asyncTestReflect">Wait...</span></li>
+  <li>Test cached SMD: <span id="smdTestResult">Wait...</span></li>
+  <li>Test async individual callbacks: <span id="indyCallbackResult">Wait...</span></li>
+</ul>
+
+<script type="text/javascript">
+<!--[
+	$(document).ready(function() {
+		alert($('<input type="submit">').is(":submit"));
+		
+
+		var api = jQuery.Zend.jsonrpc({
+			url: "/api/v1.0/jsonrpc.php", 
+			async: true,
+			success: function(ret, id, method) {
+				console.log(method + " " + ret);
+			},
+			error: function(req, stat, error, id, method) {
+				$("#result0").html("ERROR!");
+				console.log(req);
+				console.log(stat);
+				console.log(error);
+				console.log(id);
+				console.log(method);
+			}
+		});
+
+		$("#button").click(function() {
+			api.add(1, 0, {
+				success: function(ret, id, method) {
+					$('#result1').html(ret);
+				},
+				error: function() {
+					$('#result1').html('Function 1 error');
+				}
+			});
+
+			api.subtract(3, 1, {
+				success: function(ret, id, method) {
+					$('#result2').html(ret);
+				},
+				error: function() {
+					$('#result2').html('Function 2 error');
+				}
+			});
+
+			api.multiply(1, 3, {
+				success: function(ret, id, method) {
+					$('#result3').html(ret);
+				},
+				error: function() {
+					$('#result3').html('Function 3 error');
+				}
+			});
+			
+		});
+	});
+//-->
+</script>
+
+<input type="button" id="button" value="Test..." />
+<div id="result1"></div>
+<div id="result2"></div>
+<div id="result3"></div>
+<div id="result0"></div>

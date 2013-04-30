@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin>
+    <stylesheets>
+        <stylesheet>jquery.css</stylesheet>
+        <stylesheet>jquery.treeTable.css</stylesheet>
+	    <stylesheet>layout.css</stylesheet>
+	    <stylesheet>text.css</stylesheet>
+	    <stylesheet>form.css</stylesheet>
+    </stylesheets>
+</skin>

@@ -1,0 +1,32 @@
+<?php if ($this->pageCount):
+	$params = Zend_Controller_Front::getInstance()->getRequest()->getParams();
+	// hapus parameter sistem
+	unset($params["module"]);
+	unset($params["controller"]);
+	unset($params["action"]); ?>
+	
+	<div class="pagination-control">
+		<!-- Previous -->
+		<?php if (isset($this->previous)): ?>
+			<a class="button" href="<?php echo $this->url(array_merge($params, array('page' => $this->previous))); ?>">&lt; Sebelumnya</a>
+		<?php else: ?>
+			<span class="button button-disabled">&lt; Sebelumnya</span>
+		<?php endif; ?>
+		
+		<!-- Penomoran -->
+		<?php foreach ($this->pagesInRange as $page): ?>
+			<?php if ($page != $this->current): ?>
+				<a class="button" href="<?php echo $this->url(array_merge($params, array('page' => $page))); ?>"><?php echo $page; ?></a>
+			<?php else: ?>
+				<span class="button button-current"><?php echo $page; ?></span>
+			<?php endif; ?>
+		<?php endforeach; ?>
+		
+		<!-- Next -->
+		<?php if (isset($this->next)): ?>
+			<a class="button" href="<?php echo $this->url(array_merge($params, array('page' => $this->next))); ?>">Berikutnya &gt;</a>
+		<?php else: ?>
+			<span class="button button-disabled">Berikutnya &gt;</span>
+		<?php endif; ?>
+	</div>
+<?php endif; ?>

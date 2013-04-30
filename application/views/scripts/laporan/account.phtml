@@ -1,0 +1,68 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8" ?>';
+      echo $this->doctype();
+?>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    
+    <?php echo $this->headTitle(); ?>
+    <link rel="icon" href="/images/favicon.ico" />
+    <link rel="icon" href="/images/favicon_16x16.png" sizes="16x16" />
+    <link rel="icon" href="/images/favicon_32x32.png" sizes="32x32" />
+    <link rel="icon" href="/images/favicon_48x48.png" sizes="48x48" />
+    
+	<link href="/css/report.css" media="screen, print" rel="stylesheet" type="text/css" />
+	<link href="/css/report-screen.css" media="screen" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="report-wrapper">
+<?php include "/include/report-header.php";?>
+
+<div class="report-title"><h1>DATA AKUN</h1></div>
+
+<div class="report-body">
+<table class="report">
+<thead>
+	<tr>
+		<th style="width: 4%;">No</th>
+		<th style="width: 15%;">Kode Akun</th>
+		<th>Akun</th>
+		<th style="width: 15%;">Normal Pos</th>
+		<th style="width: 15%;">Kelompok</th>
+	</tr>
+</thead>
+
+<tbody>
+	<?php $i = 1; ?>
+	<?php foreach ($this->account as $row): ?>
+		<tr>
+			<td style="text-align: center;"><?php echo number_format($i, 0, ",", "."); ?></td>
+			<td><?php echo $row["kodeAccount"]; ?></td>
+			<td style="padding-left: <?php echo ($row["depth"] * 20 + 3); ?>px"><?php echo $row["account"]; ?></td>
+			<td><?php echo $row["normalPosKet"]; ?></td>
+			<td><?php echo $row["kelompokKet"]; ?></td>
+		</tr>
+		<?php $i++; ?>
+	<?php endforeach; ?>
+</tbody>
+</table>
+</div>
+
+<div class="report-footer">
+	<div class="otorisasi">
+		<div class="otorisasi-left">
+			<div class="jabatan">Dibuat Oleh</div>
+			<div class="nama"></div>
+		</div>
+		<div class="otorisasi-right">
+			<div class="jabatan">Disetujui Oleh</div>
+			<div class="nama"></div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+</div>
+</div>
+
+</body>
+</html>

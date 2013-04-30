@@ -1,0 +1,83 @@
+<script type="text/javascript"><!--
+	var api;
+	$(document).ready(function() {
+		layout.hide("west"); // Sembunyikan sidebar
+		
+		api = jQuery.Zend.jsonrpc({url: '/api/v1.0/jsonrpc.php', async: true });
+
+		$("#submit").click(function(e) {
+			e.preventDefault();
+
+			var username = $("#username").val();
+			var password = $("#password").val();
+			
+			api.login(username, password, { success: function(result, id, method) {
+				if (!result) {
+					displayMessage("Nama user dan atau password salah!");
+					return;
+				}
+
+				window.location = "<?php echo $this->ref; ?>";
+			}});
+		});
+		
+	});
+//--></script>
+
+<style><!--
+	.welcome img { 
+		border: 1px solid #cacaca;
+		-webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px; 
+		-webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, .2); -moz-box-shadow: 3px 3px 5px rgba(0, 0, 0, .2);
+    	box-shadow: 3px 3px 5px rgba(0, 0, 0, .2);
+	}
+	
+	.login { 
+		width: 200px; height: 350px;  padding: 20px 10px; margin-right: 10px;
+		border: 1px solid #cacaca; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; 
+		-webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, .2); -moz-box-shadow: 3px 3px 5px rgba(0, 0, 0, .2);
+    	box-shadow: 3px 3px 5px rgba(0, 0, 0, .2);
+	}
+	.login .form { font-size: 13px; margin: 5px 0; padding: 0; border: 0 }
+	.login .form dt { float: none; text-align: left; margin-top: 10px; }
+	.login .form dt, .login .form dd { width: 200px; }
+	.login .form input { margin: 5px 0; }
+	.login .form dd input[type="text"], .login .form dd input[type="password"] { 
+		width: 190px; font-size: inherit; 
+	}
+	.login .form dd input[type="submit"] { 
+		width: 100px; padding: 8px; font-size: inherit; font-weight: bold; margin-left: 50px; 
+	}
+	
+	.login p { font-style: italic; color: #666; }
+--></style>
+
+<!-- TODO layout menggunakan css (float) tidak bekerja -->
+<table>
+<tr valign="top"><td>
+<div class="welcome">
+	<h1>Selamat Datang</h1>
+	
+	<p>PT. Bumi Sentosa merupakan perusahaan yang berisikan personil-personil yang dinamis, enerjik dan 
+	meiliki bakat enterpreneur yang tinggi dengan pengalaman pengelolaan dan manajemen outsourcing 
+	yang sukses.</p>
+	
+	<img alt="Bumi Sentosa" src="/images/hub.jpg" />
+</div>
+</td>
+<td>
+<div class="login">
+<h1>User Login</h1>
+<p>Masukkan username dan password anda dibawah ini...</p>
+
+<?php if ($this->message): ?>
+	<div class="ui-state-error ui-corner-all message"> 
+		<div class="ui-icon ui-icon-alert"></div>
+		<div><?php echo $this->message; ?></div>
+	</div>
+<?php endif; ?>
+<?php echo $this->form; ?>
+</div>
+</td>
+</tr>
+</table>

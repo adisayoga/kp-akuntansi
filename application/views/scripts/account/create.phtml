@@ -1,0 +1,100 @@
+<script type="text/javascript"><!--
+	var api;
+	$(document).ready(function() {
+		api = jQuery.Zend.jsonrpc({url: '/api/v1.0/jsonrpc.php', async: true });
+		$(".form").validate({
+			smd: api,
+			functionName: "validateAccountForm",
+			toValidate: "#kodeAccount, #account, #kelompok, #normalPos",
+			onSubmit: addNew
+		});
+		
+		displayChilds(null);
+		$("#parent").change(function() { displayChilds($(this).val()); });
+	});
+
+	/** 
+	 * Menampilkan list account pada parent
+	 * @param string lastParentValue
+	 */
+	function displayListParent(lastParentValue) {
+		var $parentElement = $("#parent");
+		$parentElement.empty();
+		$parentElement.append('<option value="0" label="(Tidak Ada)">(Tidak Ada)</option>');
+
+		// Update comboBox
+		api.fetchAccount({ success: function(rows, id, metod) {
+			for (var idx in rows) {
+				$parentElement.append('<option value="' + rows[idx].id + '" label="' 
+						+ ". . . . ".repeat(rows[idx].depth) 
+						+ '[' + rows[idx].kodeAccount + '] - ' + rows[idx].account + '">' 
+						+ ". . . . ".repeat(rows[idx].depth) 
+						+ '[' + rows[idx].kodeAccount + '] - ' + rows[idx].account + '</option>');
+			}
+			$parentElement.val(lastParentValue);
+		}});
+	}
+	
+	/**
+	 * Menampilkan list anak berdasarkan parent
+	 * @param int parent
+	 */
+	function displayChilds(parent) {
+		if (parent == 0) parent = null; // paling awal
+		
+		var $afterElement = $("#after");
+		$afterElement.empty();
+		$afterElement.append('<option value="0" label="(Paling Awal)">(Paling Awal)</option>');
+		
+		api.fetchAccountChilds(parent, { success: function(childs, id, method) {
+			for (var idx in childs) {
+				$afterElement.append('<option value="' + childs[idx].id + '" label="' 
+					+ '[' + childs[idx].kodeAccount + '] - ' + childs[idx].account + '">' 
+					+ '[' + childs[idx].kodeAccount + '] - ' + childs[idx].account + '</option>');
+			}
+			$afterElement.val($afterElement.find(":last").val());
+		}});
+	}
+	
+	/**
+	 * Menambah data baru
+	 */
+	var addNew = function() {
+		var data = {
+			parent: $("#parent").val(),
+			after: $("#after").val(),
+			kodeAccount: $("#kodeAccount").val(),
+			account: $("#account").val(),
+			kelompok: $("#kelompok").val(),
+			normalPos: $("#normalPos").val()
+		};
+
+		api.addAccount(data, { success: function(result, id, method) {
+			if (!result) {
+				displayMessage("Tidak dapat menambah data baru!", "error");
+				return;
+			}
+
+			var lastParentValue = $("#parent").val();
+			displayListParent(lastParentValue);
+			displayChilds(lastParentValue);
+			
+			// Kosongkan field
+			$("#kodeAccount").val("");
+			$("#account").val("");
+
+			displayMessage("Data berhasil ditambahkan.");
+		}});
+	};
+//--></script>
+
+<h1>Tambah Akun</h1>
+<p>Isi form dibawah ini kemudian tekan tombol simpan.</p>
+
+<?php if ($this->message): ?>
+<div class="ui-state-highlight ui-corner-all message"> 
+		<div class="ui-icon ui-icon-info"></div>
+		<div><?php echo $this->message; ?></div>
+	</div>
+<?php endif; ?>
+<?php echo $this->form; ?>

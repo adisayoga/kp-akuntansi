@@ -1,0 +1,90 @@
+<h1>Update Jurnal Penyesuaian</h1>
+<p>Untuk meng-update jurnal ini, ubah yang anda perlukan, dan kemudian klik tombol simpan.</p>
+
+<?php if ($this->message): ?>
+	<div class="<?php echo $this->uiState; ?> ui-corner-all message"> 
+		<div class="ui-icon <?php echo $this->uiIcon; ?>"></div>
+		<div><?php echo $this->message; ?></div>
+	</div>
+<?php endif; ?>
+
+<form id="journal" enctype="application/x-www-form-urlencoded" class="form" action="/journal-penyesuaian/update" method="post">
+	<dl class="zend_form"><?php 
+		// karena form ini berisi detail, maka harus di-print per element
+		echo $this->form->getElement("id");
+		echo $this->form->getElement("tipeJournal");
+		echo $this->form->getElement("noBukti");
+		echo $this->form->getElement("tanggal");
+		echo $this->form->getElement("keterangan");
+		echo $this->form->getElement("total");
+	?></dl>
+
+	<table class='spreadsheet journal' cellspacing='0' style="width: 100%;">
+	<thead>
+		<tr class="ui-widget-header">
+			<th style="width: 20px;">&nbsp;</th>
+			<th style="width: 100px;">Kode Akun</th>
+			<th>Akun</th>
+			<th style="width: 100px;">Debit</th>
+			<th style="width: 100px;">Kredit</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php $i = 0; foreach ($this->details as $row): ?>
+		<tr>
+			<td class="action"><input type="checkbox" name="include<?php echo $i++; ?>" 
+				checked="checked"  class="include" /></td>
+			
+			<td><input type="text" name="kodeAccount[]" value="<?php echo $row["kodeAccount"]; ?>" 
+				class="kodeAccount" disabled="disabled" style="width: 100px;"/></td>
+			
+			<td><select name="account[]" class="account" style="width: 99%; ">
+				<?php 
+					foreach($this->accountList as $key => $value) {
+						echo "<option value='$key' label='$value' " 
+							. (($row["idAccount"] == $key)? "selected='selected'": "") . ">$value</option>";
+					}
+				?>
+				</select></td>
+				
+			<td><input type="text" name="debit[]" value="<?php echo $row["debit"]; ?>" class="debit" 
+				style="width: 100px; " /></td>
+			
+			<td><input type="text" name="kredit[]" value="<?php echo $row["kredit"]; ?>" class="kredit" 
+				style="width: 100px; " /></td>
+		</tr>
+		<?php endforeach; ?>
+		
+		<!-- Blank input -->
+		<tr>
+			<td class="action"><input type="checkbox" name="include<?php echo $i++; ?>" 
+				checked="checked" class="include" /></td>
+			
+			<td><input type="text" name="kodeAccount[]" value="" 
+				class="kodeAccount" disabled="disabled" style="width: 100px;"/></td>
+			
+			<td><select name="account[]" class="account" style="width: 99%; ">
+				<?php 
+					foreach($this->accountList as $key => $value) {
+						echo "<option value='$key' label='$value'>$value</option>";
+					}
+				?>
+				</select></td>
+				
+			<td><input type="text" name="debit[]" value="0" class="debit" style="width: 100px; " /></td>
+			
+			<td><input type="text" name="kredit[]" value="0" class="kredit" style="width: 100px; " /></td>
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td>&nbsp;</td>
+			<td colspan="2"><div class="addRow">&nbsp;</div></td>
+			<td><span class="totalDebit" style="padding: 8px; "><?php echo $this->totalDebit; ?></span></td>
+			<td><span class="totalKredit" style="padding: 8px; "><?php echo $this->totalKredit; ?></span></td>
+		</tr>
+	</tfoot>
+	</table>
+	
+	<dl><dt>&nbsp;</dt><dd><input type="submit" value="Simpan" /></dd></dl>
+</form>

@@ -1,0 +1,42 @@
+<script type="text/javascript">
+<!--
+	var api;
+	var lastKodeAccount = <?php echo(($this->lastKodeAccount)? '"' . $this->lastKodeAccount . '"': "null"); ?>;
+
+	$(document).ready(function() {
+		api = jQuery.Zend.jsonrpc({url: '/api/v1.0/jsonrpc.php', async: true });
+		
+		$(".form").validate({
+			smd: api,
+			functionName: "validateAccountForm",
+			toValidate: "#kodeAccount, #account, #kelompok, #normalPos",
+			exclude: lastKodeAccount,
+			onSubmit: updateAccount
+		});
+	});
+
+	/** Mengubah data account */
+	var updateAccount = function() {
+		var data = {
+			kodeAccount: $("#kodeAccount").val(),
+			account: $("#account").val(),
+			kelompok: $("#kelompok").val(),
+			normalPos: $("#normalPos").val()
+		};
+		
+		api.updateAccount($("#id").val(), data, { success: function(result, id, method) {
+			if (!result) {
+				displayMessage("Data tidak dapat diubah!", "error");
+				return;
+			}
+			
+			window.location = "/account";
+		}});
+	};
+//-->
+</script>
+
+<h1>Update Akun</h1>
+<p>Untuk meng-update akun ini, ubah yang anda perlukan, dan kemudian klik tombol update.</p>
+
+<?php echo $this->form; ?>

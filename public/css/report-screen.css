@@ -1,0 +1,20 @@
+/**
+ * Disini hanya untuk tampilan (preview) di browser saja, tidak untuk dicetak.
+ */
+
+@CHARSET "ISO-8859-1";
+
+body { 
+	background: #f2f5f7; /* non-css3 */
+    background: -webkit-gradient(linear, left top, left bottom, from(#f2f5f7), to(#ffffff)); /* webkit */
+    background: -moz-linear-gradient(top, #f2f5f7, #ffffff); /* firefox 3.6+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2f5f7', endColorstr='#ffffff'); /* IE */
+}
+.report-wrapper { 
+	padding: 15mm 15mm 15mm 20mm;
+	margin: 10px auto; width: 175mm; 
+	background: #ffffff; border: 1px solid #000000;
+	-webkit-box-shadow: 3px 3px 10px rgba(100, 100, 100, .5); 
+	-moz-box-shadow: 3px 3px 10px rgba(100, 100, 100, .5); 
+	box-shadow: 3px 3px 10px rgba(100, 100, 100, .5); 
+}

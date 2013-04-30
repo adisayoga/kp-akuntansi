@@ -1,0 +1,102 @@
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	api = jQuery.Zend.jsonrpc({url: '/api/v1.0/jsonrpc.php', async: true });
+	initializeHandle();
+});
+
+var cache = [];
+
+/** 
+ * Pergi ke halaman tertentu
+ * @param int page
+ */
+function gotoPage(page) {
+	if (cache[page]) {
+		displayData(cache[page]);
+		return; // Data hanya di-request sekali saja, setelah itu digunakan cache
+	}
+	
+	api.fetchUserPaginator(page, { success: function(result, id, method) {
+		cache[page] = result;
+		displayData(cache[page]);
+	}});
+}
+
+/** 
+ * Menampilkan data 
+ * @param json result
+ */
+function displayData(result) {
+	$(".spreadsheet").displayPagedData({
+	    data: result.data, 
+	    url: "/user", 
+	    fields: {
+	        0: { name: "username" },
+	        1: { name: "displayName" },
+	        2: { name: "role" }
+	    }
+    });
+    $(".pagination").paginationControl({
+	    pagination: result.pagination, 
+	    url: "/user/index"
+    });
+
+    initializeHandle();
+}
+
+/** 
+ * Setelah pagination control dibuat ulang, click handle awal tidak berlaku lagi 
+ * maka disini dibuat lagi. 
+ */
+function initializeHandle() {
+	$(".pagination a").click(function(e) {
+		e.preventDefault();
+		var href = $(this).attr("href");
+		var page = href.substr(href.indexOf("/page/") + 6);		
+		gotoPage(page);
+	});
+
+	$(".action .delete").click(function(e) {
+		e.preventDefault();
+		if (!confirm("Anda yakin mau menghapus data ini?")) return;
+		
+		var href = $(this).attr("href");
+		var id = href.substr(href.indexOf("/id/") + 4);
+		api.deleteUser(id, { success: function(result, id, method) {
+			if (!result) {
+				displayMessage("Data tidak dapat dihapus!", "error");
+				return;
+			}
+			
+			var currentPage = $(".pagination .current").text();
+			cache[currentPage] = null;
+			gotoPage(currentPage); // Refresh data
+			displayMessage("Data berhasil dihapus");
+		}});
+	});
+}
+//--></script>
+
+<h1>Data User</h1>
+
+<table class='spreadsheet' cellspacing='0' style="width: 100%;">
+<thead>
+	<tr>
+		<th class="action">&nbsp;</th>
+		<th style="width: 30%; ">Nama User</th>
+		<th>Nama Ditampilkan</th>
+		<th style="width: 20%; ">Role</th>
+	</tr>
+</thead>
+<tbody>
+	<?php echo $this->partialLoop('user/_table-row.phtml', $this->paginator); ?>
+</tbody>
+</table>
+
+<div class="pagination-control" style="width: 100%;">
+	<div class="action"><a class="button" href="/user/create">Tambah User Baru</a></div>
+	<div class="pagination">
+		<?php echo $this->paginationControl($this->paginator, "Sliding", "_partials/pagination-control.phtml"); ?>
+	</div>
+	<div style="clear: both; "></div>
+</div>

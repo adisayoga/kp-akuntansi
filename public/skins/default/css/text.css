@@ -1,0 +1,38 @@
+@CHARSET "ISO-8859-1";
+
+body { font-family: Arial, sans-serif; font-size: 12px; }
+pre {font-family: Consolas, "Courier New"; }
+input, select, textarea { font-family: Arial, sans-serif; font-size: 12px; }
+
+/* Header
+-------------------------------------------------------------------------*/
+.header-title h1 {
+    font-family: "Trebuchet MS", Tahoma, Verdana, Arial, sans-serif;
+    font-size: 20px; font-weight: normal; font-style: italic;
+}
+.header-title h2 {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 13px; font-weight: bold;
+}
+
+/* Menu
+-------------------------------------------------------------------------*/
+.nav { font-family: "Trebuchet MS", Tahoma, Verdana, Arial, sans-serif; }
+
+/* Sidebar
+-------------------------------------------------------------------------*/
+.ui-layout-pane-west h1 { 
+	font-size: 13px;
+    font-family: "Trebuchet MS", Tahoma, Verdana, Arial, sans-serif; 
+}
+
+/* Content
+-------------------------------------------------------------------------*/
+.ui-layout-pane-center h1 { 
+	font-size: 17px; font-weight: normal;
+	font-family: "Trebuchet MS", Tahoma, Verdana, Arial, sans-serif; 
+}
+.ui-layout-pane-center h2 { font-size: 14px; }
+.ui-layout-pane-center h3 { font-size: 13px; }
+
+.spreadsheet th { font-family: "Trebuchet MS", Tahoma, Verdana, Arial, sans-serif; }

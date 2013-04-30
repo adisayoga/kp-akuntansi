@@ -1,0 +1,127 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8" ?>';
+      echo $this->doctype();
+      $this->layout()->userLogin = $this->action("state", "user");
+?>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="icon" href="/images/favicon.ico" />
+    <link rel="icon" href="/images/favicon_16x16.png" sizes="16x16" />
+    <link rel="icon" href="/images/favicon_32x32.png" sizes="32x32" />
+    <link rel="icon" href="/images/favicon_48x48.png" sizes="48x48" />
+    
+	<?php 
+    echo $this->headTitle();
+    echo $this->loadSkin($this->skin); 
+    echo $this->headLink();
+    echo $this->jQuery(); 
+    echo $this->headScript(); 
+    ?>
+    
+    <script type="text/javascript">
+		// Layout
+		var layout;
+    	$(function() {
+	    	layout = $("body").layout({
+	    	    north: { resizable: false, closable: false, spacing_open: 0 },
+	    	    west:  { size: 180, closable: false },
+	    	    south: { resizable: false, closable: false, spacing_open: 0 }
+	    	});
+	    	layout.allowOverflow("north");
+	    });
+    </script>
+</head>
+
+<body>
+    <!-- Header & Menu -->
+	<div class="ui-layout-north">
+		<!-- Header -->
+        <div class="header">
+        	<div class="message" style="position: absolute; max-width: 600px; ">&nbsp;</div>
+        	
+        	<div class="header-title">
+	            <div class="logo1"><a href="/"></a></div><div class="logo2"><a href="/"></a></div>  
+	            <div class="title"><h1>Sistem Informasi Akuntansi</h1><h2>PT. Bumi Sentosa</h2></div>
+		        <div class="user"><?php echo $this->layout()->userLogin; ?></div>
+	        </div>
+	        
+	        <!-- Menu -->
+	        <div class="nav">
+	            <ul class="menu">
+	            	<!-- Home -->
+	                <li><a href="/" class="current">Home</a></li>
+	                
+	                <!-- Master -->
+	                <li><a href="#">Master</a>
+	                    <ul><li><a href="/account">Data Akun</a></li></ul>
+	                </li>
+	                
+	                <!-- Transaksi -->
+	                <li><a href="#">Transaksi</a>
+	                    <ul>
+	                        <li><a href="/journal">Transaksi Jurnal</a></li>
+	                        <li><a href="/journal-penyesuaian">Jurnal Penyesuaian</a></li>
+	                    </ul>
+	                </li>
+	                
+	                <!-- Laporan -->
+	                <li><a href="#" class="last">Laporan</a>
+	                    <ul>
+	                        <li><a href="/laporan/account" target="blank">Laporan Akun</a></li>
+				            <li><a href="/laporan/journal-umum" target="blank">Laporan Jurnal Umum</a></li>
+				            <li><a href="/laporan/bukubesar" target="blank">Laporan Buku Besar</a></li>
+				            <li><a href="/laporan/labarugi" target="blank">Laporan Laba/Rugi</a></li>
+	                        <li><a href="/laporan/neraca" target="blank">Laporan Neraca</a></li>
+	                    </ul>
+	                </li>
+	            </ul>
+	            
+	            <ul class="menu menu-right">
+	                <li><a href="/settings">Settings</a></li>
+	            </ul>
+	        </div>
+        </div>
+	</div>
+	
+    <!-- Sidebar -->
+	<div class="ui-layout-west">
+        <!-- Master -->
+        <h1>Master</h1>
+	    <ul class="master">
+            <li><a href="/account">Data Akun</a></li>
+        </ul>
+        
+        <!-- Transaksi -->
+        <h1>Transaksi</h1>
+        <ul class="transaksi">
+            <li><a href="/journal">Transaksi Jurnal</a></li>
+            <li><a href="/journal-penyesuaian">Jurnal Penyesuaian</a></li>
+        </ul>
+        
+        <!-- Laporan -->
+        <h1>Laporan</h1>
+        <ul class="laporan">
+            <li><a href="/laporan/account" target="blank">Laporan Akun</a></li>
+            <li><a href="/laporan/journal-umum" target="blank">Laporan Jurnal Umum</a></li>
+            <li><a href="/laporan/bukubesar" target="blank">Laporan Buku Besar</a></li>
+            <li><a href="/laporan/labarugi" target="blank">Laporan Laba/Rugi</a></li>
+            <li><a href="/laporan/neraca" target="blank">Laporan Neraca</a></li>
+        </ul>
+	</div>
+	
+    <!-- Content -->
+    <div class="ui-layout-center">
+        <?php echo $this->layout()->content; ?>
+    </div>
+    
+    <!-- Footer -->
+	<div class="ui-layout-south">
+        <div class="menu-footer">
+            <a href="#">Privacy Statement</a> | 
+            <a href="#">Term of Use</a>
+        </div>
+        <div class="copyright"><em>Copyright &copy; 2010-2011 by <a href="http://adisayoga.appspot.com" 
+            target="blank">Adi Sayoga</a></em></div>
+	</div>
+</body>
+</html>

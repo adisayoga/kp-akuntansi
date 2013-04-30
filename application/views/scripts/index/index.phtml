@@ -1,0 +1,85 @@
+<style><!--
+	.siklus-akuntansi { width: 90%; margin: 20px auto; clear: both; text-align: center; }
+	.siklus-akuntansi ul { list-style: none; margin: 0; padding: 0; } /* default */
+	.siklus-akuntansi ul a, .siklus-akuntansi ul span { font-weight: normal; }
+	.siklus-akuntansi .title { margin-bottom: 10px; }
+	.siklus-akuntansi .title ul li { 
+		float: left; width: 32%; padding: 5px 0; margin: 5px 0.5%; 
+		border-top: 1px solid #deedf7; border-bottom: 1px solid #deedf7;
+		background: #f2f5f7; /* non-css3 */
+	    background: -webkit-gradient(linear, left top, left bottom, from(#f2f5f7), to(#ffffff)); /* webkit */
+	    background: -moz-linear-gradient(top, #f2f5f7, #ffffff); /* firefox 3.6+ */
+	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2f5f7', endColorstr='#ffffff'); /* IE */
+	}
+	.siklus-akuntansi .title ul li:first-child { border-left: 1px solid #deedf7; }
+	.siklus-akuntansi .title ul li:last-child { border-right: 1px solid #deedf7; }
+	.siklus-akuntansi .title h1 { font-size: 13px; font-weight: bold; color: #0070a3; }
+	
+	.siklus-akuntansi .content { padding: 0 3.5%; }
+	.siklus-akuntansi .pencatatan, .siklus-akuntansi .penggolongan, .siklus-akuntansi .pelaporan { 
+		float: left; width: 27%;
+	}
+	
+	.siklus-akuntansi .content .button { padding: 12px 10px; display: block; margin: 5%; }
+	.siklus-akuntansi .content .pelaporan ul ul { border: 1px solid #dce3e7; }
+	.siklus-akuntansi .content .pelaporan ul ul:hover { border-color: #aaa; }
+	
+	.siklus-akuntansi .gap-vertical { float: left; width: 8.5%; height: 25px; margin-top: 15px; background: url(/images/arrow-left.png) 50% 50% no-repeat; }
+	.siklus-akuntansi .gap-horizontal { margin: 5px 0; height: 25px; }
+	.siklus-akuntansi .pencatatan .gap-horizontal { background: url(/images/arrow-up.png) 50% 50% no-repeat; }
+	.siklus-akuntansi .pelaporan .gap-horizontal { background: url(/images/arrow-down.png) 50% 50% no-repeat; }
+--></style>
+
+<h1>Selamat Datang...</h1>
+
+<p>Untuk memulai, pilih menu dibawah ini:</p>
+
+<div class="siklus-akuntansi">
+    <!-- Title -->
+    <div class="title">
+	    <ul>
+	        <li class="ui-corner-left"><h1>Pencatatan</h1></li>
+	        <li><h1>Penggolongan</h1></li>
+	        <li class="ui-corner-right"><h1>Pelaporan</h1></li>
+	    </ul>
+      <div style="clear: both;"></div>
+    </div>
+    
+    <!-- Pencatatan -->
+    <div class="content">
+	    <div class="pencatatan">
+		    <ul>
+		        <li><a href="/journal-penyesuaian" class="button">Jurnal Penyesuaian</a></li>
+                <li><div class="gap-horizontal">&nbsp;</div></li>
+	            <li><a href="/journal" class="button">Transaksi Jurnal</a></li>
+                <li><div class="gap-horizontal">&nbsp;</div></li>
+	            <li><a href="/account" class="button">Data Akun</a></li>
+		    </ul>
+	    </div>
+	    <div class="gap-vertical"></div>
+	    
+	    <!-- Penggolongan -->
+	    <div class="penggolongan">
+		    <ul>
+		        <li><a href="/lap-bukubesar" class="button">Buku Besar</a></li>
+		    </ul>
+	    </div>
+	    <div class="gap-vertical"></div>
+	    
+	    <!-- Pelaporan -->
+	    <div class="pelaporan">
+	        <ul>
+                <li class="button-noclick"><span class="button button-lock">Laporan Keuangan:</span></li>
+	            <li><div class="gap-horizontal">&nbsp;</div></li>
+                <li><ul class="ui-corner-all">
+	                <li><a href="/laporan/account" target="blank" class="button">Laporan Akun</a></li>
+		            <li><a href="/laporan/journal-umum" target="blank" class="button">Laporan Jurnal Umum</a></li>
+		            <li><a href="/laporan/bukubesar" target="blank" class="button">Laporan Buku Besar</a></li>
+                    <li><a href="/laporan/labarugi" target="blank" class="button">Laporan Laba/Rugi</a></li>
+		            <li><a href="/laporan/neraca" target="blank" class="button">Laporan Neraca</a></li>
+	            </ul></li>
+            </ul>
+	    </div>
+	    <div style="clear: both;"></div>
+    </div>
+</div>

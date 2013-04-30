@@ -1,0 +1,169 @@
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	api = jQuery.Zend.jsonrpc({url: '/api/v1.0/jsonrpc.php', async: true });
+	initializeHandle();
+
+	// Tombol filter tidak diperlukan
+	$(".filter input:submit").hide();
+	
+	$(".filter #tahun, .filter #bulan").change(function(e) {
+		cache = [];
+		gotoPage(1);
+	});
+});
+
+var tipeJournal = 2; // Journal Penyesuaian
+var cache = [];
+
+/** 
+ * Pergi ke halaman tertentu
+ * @param int page
+ */
+ function gotoPage(page) {
+	if (cache[page]) {
+		displayData(cache[page]);
+		return; // Data hanya di-request sekali saja, setelah itu digunakan cache
+	}
+
+	var tahun = $(".filter #tahun").val();
+	var bulan = $(".filter #bulan").val();
+	api.fetchJournalPaginator(page, tipeJournal, tahun, bulan, { success: function(result, id, method) {
+		cache[page] = result;
+		displayData(cache[page]);
+	}});
+}
+
+/** 
+ * Menampilkan data 
+ * @param json result
+ */
+function displayData(result) {
+	$(".spreadsheet").displayPagedData({
+	    data: result.data, 
+	    url: "/journal-penyesuaian", 
+	    fields: {
+	        0: { name: "tanggal" },
+	        1: { name: "noBukti" },
+	        2: { name: "kodeAccount" },
+	        3: { name: "account", pos: "pos" },
+	        4: { name: "debit", align: "right" },
+	        5: { name: "kredit", align: "right" },
+	        6: { name: "keterangan" }
+	    }
+    });
+    $(".pagination").paginationControl({
+	    pagination: result.pagination, 
+	    url: "/journal-penyesuaian/index"
+    });
+
+    initializeHandle();
+}
+
+/** 
+ * Setelah pagination control dibuat ulang, click handle awal tidak berlaku lagi 
+ * maka disini dibuat lagi. 
+ */
+function initializeHandle() {
+	$(".pagination a").click(function(e) {
+		e.preventDefault();
+		var href = $(this).attr("href");
+		var page = href.substr(href.indexOf("/page/") + 6);		
+		gotoPage(page);
+	});
+	
+	$(".action .delete").click(function(e) {
+		e.preventDefault();
+		
+		if (!confirm("Menghapus jurnal ini juga akan menghapus jurnal lain dengan no bukti yang sama. "
+				+ "Untuk menghapus hanya jurnal ini, gunakan edit.\n\nYakin mau menghapus data ini?")) 
+			return
+		
+		var href = $(this).attr("href");
+		var id = href.substr(href.indexOf("/id/") + 4);
+		api.deleteJournal(id, { success: function(result, id, method) {
+			if (!result) {
+				displayMessage("Data tidak dapat dihapus!", "error");
+				return;
+			}
+			
+			var currentPage = $(".pagination .current").text();
+			cache[currentPage] = null;
+			gotoPage(currentPage); // Refresh data
+			displayMessage("Data berhasil dihapus");
+		}});
+	});
+}
+//-->
+</script>
+
+<h1>Jurnal Penyesuaian</h1>
+
+<div class="filter">
+<form id="periode" enctype="application/x-www-form-urlencoded" action="/journal-penyesuaian" method="post" class="form form-filter">
+	<table border="0">
+	<tr>
+		<td>Periode: &nbsp;&nbsp;</td>
+		<td><select name="bulan" id="bulan">
+			<?php 
+				$bulan = array(
+					"1"  => "Januari",
+					"2"  => "Februari",
+					"3"  => "Maret",
+					"4"  => "April",
+					"5"  => "Mei",
+					"6"  => "Juni",
+					"7"  => "Juli",
+					"8"  => "Agustus",
+					"9"  => "September",
+					"10" => "Oktober",
+					"11" => "Nopember",
+					"12" => "Desember"
+				);
+			?>
+			
+			<?php foreach($bulan as $key => $value): ?>
+				<option value="<?php echo $key; ?>" label="<?php echo $value; ?>"
+					<?php if ($this->bulan == $key) echo 'selected="selected"'; ?>>
+					<?php echo $value; ?>
+				</option>
+			<?php endforeach; ?>
+		</select></td>
+		
+		<td><select name="tahun" id="tahun">
+			<?php for ($i = $this->tahun - 30; $i <= $this->tahun + 10; $i++): ?>
+				<option value="<?php echo $i; ?>" label="<?php echo $i; ?>" 
+					<?php if ($this->tahun == $i) echo 'selected="selected"'; ?>>
+					<?php echo $i; ?></option>
+			<?php endfor; ?>
+		</select>
+		<td><input type="submit" value="OK" /></td>
+	</tr>
+	</table>
+</form>
+</div>
+
+<table class='spreadsheet' cellspacing='0' style="width: 100%;">
+<thead>
+	<tr>
+		<th class="action">&nbsp;</th>
+		<th style="/*width: 60px;*/">Tanggal</th>
+		<th style="/*width: 70px;*/">No. Bukti</th>
+		<th style="/*width: 70px;*/">Kode Akun</th>
+		<th>Akun</th>
+		<th style="/*width: 80px;*/">Debit</th>
+		<th style="/*width: 80px;*/">Kredit</th>
+		<th>Keterangan</th>
+	</tr>
+</thead>
+<tbody>
+	<?php echo $this->partialLoop('journal-penyesuaian/_table-row.phtml', $this->paginator); ?>
+</tbody>
+</table>
+
+<div class="pagination-control" style="width: 100%;">
+	<div class="action"><a class="button" href="/journal-penyesuaian/create">Tambah Jurnal Baru</a></div>
+	<div class="pagination">
+		<?php echo $this->paginationControl($this->paginator, "Sliding", "_partials/pagination-control.phtml"); ?>
+	</div>
+	<div style="clear: both; "></div>
+</div>
